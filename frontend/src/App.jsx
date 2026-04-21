@@ -1,17 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+// Auth
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 
+// Admin
 import Dashboard from "./pages/Admin/Dashboard";
 import ManageTasks from "./pages/Admin/ManageTasks";
 import ManageUsers from "./pages/Admin/ManageUsers";
 import CreateTask from "./pages/Admin/CreateTask";
 
+// User
 import UserDashboard from "./pages/User/UserDashboard";
 import MyTasks from "./pages/User/MyTasks";
 import ViewTaskDetails from "./pages/User/ViewTaskDetails.jsx";
 
+// Routes
 import PrivateRoute from "./routes/PriveRoute";
 
 const App = () => {
