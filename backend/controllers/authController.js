@@ -64,6 +64,29 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
   try {
+    const { email, password } = req.body || {};
+
+    // Check for user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Check if password is correct
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Return user data with JWT token
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      profileImageUrl: user.profileImageUrl,
+      role: user.role,
+      token: generateToken(user._id),
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
