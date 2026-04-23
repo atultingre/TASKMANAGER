@@ -128,6 +128,29 @@ const createTask = async (req, res) => {
 // @access  Private
 const updateTask = async (req, res) => {
   try {
+    const task = await Task.findByIdAndUpdate(req.params.id);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    task.title = req.body.title || task.title;
+    task.description = req.body.description || task.description;
+    task.priority = req.body.priority || task.priority;
+    task.dueDate = req.body.dueDate || task.dueDate;
+    task.todoChecklist = req.body.todoChecklist || task.todoChecklist;
+    task.attachments = req.body.attachments || task.attachments;
+
+    if (req.body.assignedTo) {
+      if (!Array.isArray(req.body.assignedTo)) {
+        return res
+          .status(400)
+          .json({ message: "assignedTo must be an array of user IDs" });
+      } else {
+        task.assignedTo = req.body.assignedTo;
+      }
+    }
+
+    const updatedTask = await task.save();
+    res.json({ message: "Task updated successfully", updatedTask });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
