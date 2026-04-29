@@ -23,7 +23,6 @@ const Signup = () => {
       setError("Please enter your full name.");
       return;
     }
- 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
