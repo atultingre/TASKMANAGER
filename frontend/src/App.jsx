@@ -1,10 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Outlet,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 // Auth
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
@@ -22,13 +16,13 @@ import ViewTaskDetails from "./pages/User/ViewTaskDetails.jsx";
 
 // Routes
 import PrivateRoute from "./routes/PriveRoute";
-import UserProvider, { UserContext } from "./context/userContext.jsx";
 import { useContext } from "react";
+import UserProvider, { UserContext } from "./context/userContext.jsx";
 
 const App = () => {
   return (
-    <UserProvider>
-      <Router>
+    <>
+      <>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -53,8 +47,8 @@ const App = () => {
           {/* Default Route */}
           <Route path="/" element={<Root />} />
         </Routes>
-      </Router>
-    </UserProvider>
+      </>
+    </>
   );
 };
 
