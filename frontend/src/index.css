@@ -29,3 +29,7 @@
 .card {
   @apply bg-white shadow-md shadow-gray-100 border border-gray-200/50 p-6 rounded-2xl my-1;
 }
+
+.card-btn {
+  @apply text-sm font-medium text-blue-600 flex items-center gap-1 hover:text-blue-700 transition-colors duration-300 cursor-pointer bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200/50;
+}
