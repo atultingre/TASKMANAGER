@@ -11,6 +11,10 @@ import InfoCard from "../../components/Cards/InfoCard";
 import { addThousandSeparator } from "../../utils/helper";
 import { LuArrowRight } from "react-icons/lu";
 import TaskListTable from "../../components/TaskListTable";
+import CustomPieChart from "../../components/Charts/CustomPieChart";
+
+// const COLORS = ["#4F46E5", "#6366F1", "#818CF8", "#A5B4FC", "#C7D2FE"];
+const COLORS = ["#8D51FF", "#00B8DB", "#7BCE00", "#FFB800", "#FF6B6B"];
 
 const Dashboard = ({ children, activeMenu }) => {
   useUserAuth(); // This will handle authentication and redirection if not authenticated
@@ -21,6 +25,28 @@ const Dashboard = ({ children, activeMenu }) => {
   const [pieChartData, setPieChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
 
+  // Prepare charts data
+  const prepareChartsData = (data) => {
+    const taskDistribution = data?.taskDistribution || null;
+    const taskPriorityLavels = data?.taskPriorityLevels || null;
+
+    const taskDistributionData = [
+      { status: "Pending", count: taskDistribution?.Pending || 0 },
+      { status: "In Progress", count: taskDistribution?.InProgress || 0 },
+      { status: "Completed", count: taskDistribution?.Completed || 0 },
+    ];
+
+    setPieChartData(taskDistributionData);
+
+    const taskPriorityData = [
+      { priority: "Low", count: taskPriorityLavels?.Low || 0 },
+      { priority: "Medium", count: taskPriorityLavels?.Medium || 0 },
+      { priority: "High", count: taskPriorityLavels?.High || 0 },
+    ];
+
+    setBarChartData(taskPriorityData);
+  };
+
   const getDashboardData = async () => {
     try {
       const response = await axiosInstance.get(
@@ -28,6 +54,7 @@ const Dashboard = ({ children, activeMenu }) => {
       );
       if (response.data) {
         setDashboardData(response.data);
+        prepareChartsData(response.data?.charts || null);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -87,6 +114,18 @@ const Dashboard = ({ children, activeMenu }) => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
+        <div className="">
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <h5 className="font-medium">Task Distribution</h5>
+            </div>
+            <CustomPieChart
+              data={pieChartData}
+              label="Total Balance"
+              colors={COLORS}
+            />
+          </div>
+        </div>
         <div className="md:col-span-2">
           <div className="card">
             <div className="flex items-center justify-between">
