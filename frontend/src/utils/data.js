@@ -3,7 +3,7 @@ import {
   LuUsers,
   LuClipboardCheck,
   LuSquarePlus,
-  LuLogout,
+  LuLogOut,
 } from "react-icons/lu";
 
 export const SIDE_MENU_DATA = [
@@ -26,7 +26,7 @@ export const SIDE_MENU_DATA = [
     path: "/admin/create-task",
   },
   { id: 2, label: "Team Members", icon: LuUsers, path: "/admin/users" },
-  { id: 5, label: "Logout", icon: LuLogout, path: "logout" },
+  { id: 5, label: "Logout", icon: LuLogOut, path: "logout" },
 ];
 
 export const SIDE_MENU_USER_DATA = [
@@ -42,7 +42,7 @@ export const SIDE_MENU_USER_DATA = [
     icon: LuUsers,
     path: "/user/tasks",
   },
-  { id: 3, label: "Logout", icon: LuLogout, path: "logout" },
+  { id: 3, label: "Logout", icon: LuLogOut, path: "logout" },
 ];
 
 export const PRIORITY_DATA = [
