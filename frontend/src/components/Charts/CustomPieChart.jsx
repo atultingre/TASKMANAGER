@@ -7,6 +7,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import CustomTooltip from "./CustomTooltip";
+import CustomLegend from "./CustomLegend";
 
 const defaultColors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28EFF"];
 
@@ -24,14 +26,14 @@ const CustomPieChart = ({ data, label, colors = defaultColors }) => {
           outerRadius={130}
           innerRadius={100}
           labelLine={false}
-            // fill="#8884d8"
+          // fill="#8884d8"
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
-        <Tooltip />
-        <Legend />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend content={<CustomLegend />} />
       </PieChart>
     </ResponsiveContainer>
   );
