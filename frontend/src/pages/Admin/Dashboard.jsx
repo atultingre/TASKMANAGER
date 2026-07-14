@@ -12,6 +12,7 @@ import { addThousandSeparator } from "../../utils/helper";
 import { LuArrowRight } from "react-icons/lu";
 import TaskListTable from "../../components/TaskListTable";
 import CustomPieChart from "../../components/Charts/CustomPieChart";
+import CustomBarChart from "../../components/Charts/CustomBarChart";
 
 // const COLORS = ["#4F46E5", "#6366F1", "#818CF8", "#A5B4FC", "#C7D2FE"];
 const COLORS = ["#8D51FF", "#00B8DB", "#7BCE00", "#FFB800", "#FF6B6B"];
@@ -29,7 +30,6 @@ const Dashboard = ({ children, activeMenu }) => {
   const prepareChartsData = (data) => {
     const taskDistribution = data?.taskDistribution || null;
     const taskPriorityLavels = data?.taskPriorityLevels || null;
-
     const taskDistributionData = [
       { status: "Pending", count: taskDistribution?.Pending || 0 },
       { status: "In Progress", count: taskDistribution?.InProgress || 0 },
@@ -64,6 +64,8 @@ const Dashboard = ({ children, activeMenu }) => {
   const onSeeMore = () => {
     navigate("/admin/tasks");
   };
+
+  // console.log("barChartData", barChartData);
 
   useEffect(() => {
     getDashboardData();
@@ -123,6 +125,18 @@ const Dashboard = ({ children, activeMenu }) => {
               data={pieChartData}
               label="Total Balance"
               colors={COLORS}
+            />
+          </div>
+        </div>
+        <div className="">
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <h5 className="font-medium">Task Priority Levels</h5>
+            </div>
+            <CustomBarChart
+              data={barChartData}
+              // label="Total Balance"
+              // colors={COLORS}
             />
           </div>
         </div>
