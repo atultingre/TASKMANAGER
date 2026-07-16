@@ -18,11 +18,12 @@ import ViewTaskDetails from "./pages/User/ViewTaskDetails.jsx";
 import PrivateRoute from "./routes/PriveRoute";
 import { useContext } from "react";
 import UserProvider, { UserContext } from "./context/userContext.jsx";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
-    <>
-      <>
+    <UserProvider>
+      <div className="">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -47,8 +48,16 @@ const App = () => {
           {/* Default Route */}
           <Route path="/" element={<Root />} />
         </Routes>
-      </>
-    </>
+      </div>
+      <ToastContainer
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "13px",
+          },
+        }}
+      />
+    </UserProvider>
   );
 };
 

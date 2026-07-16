@@ -406,20 +406,19 @@ const getUserDashboardData = async (req, res) => {
       .limit(10)
       .select("title status priority dueDate createdAt");
 
-      res.json({
-        statistics: {
-          totalTasks,
-          pendingTasks,
-          completedTasks,
-          overdueTasks,
-        },
-        charts: {
-          taskDistribution,
-          taskPriorityLevels,
-        },
-        recentTasks,
-      });
-
+    res.json({
+      statistics: {
+        totalTasks,
+        pendingTasks,
+        completedTasks,
+        overdueTasks,
+      },
+      charts: {
+        taskDistribution,
+        taskPriorityLevels,
+      },
+      recentTasks,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

@@ -36,7 +36,7 @@ const TodoListInput = ({ todoList, setTodoList }) => {
             onClick={() => handleDeleteOption(index)}
           >
             <HiOutlineTrash className="text-lg text-red-500" />
-          </button> 
+          </button>
         </div>
       ))}
       <div className="flex items-center gap-5 mt-4">
@@ -51,6 +51,9 @@ const TodoListInput = ({ todoList, setTodoList }) => {
           <HiMiniPlus className="text-lg" /> Add
         </button>
       </div>
+
+      {/* Add attachment */}
+      {/* 3:27 */}
     </div>
   );
 };
