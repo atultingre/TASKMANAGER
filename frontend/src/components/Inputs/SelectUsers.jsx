@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { LuUsers } from "react-icons/lu";
+import Modal from "../Modal";
+import AvatarGroup from "../AvatarGroup";
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   const [allUsers, setAllUsers] = useState([]);
@@ -49,12 +51,59 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   return (
     <div className="space-y-4 mt-2">
       {selectedUserAvatars.length === 0 && (
-        <button className="card-btn" onClick={() => setIsModalOpen(true)}>
+        <button className="card-btn text-nowrap" onClick={() => setIsModalOpen(true)}>
           <LuUsers className="text-sm" /> Add Members
         </button>
       )}
 
-      
+      {selectedUserAvatars.length > 0 && (
+        <div className="cursor-pointer" onClick={() => setIsModalOpen(true)}>
+          <AvatarGroup avatars={selectedUserAvatars} maxVisible={3}/>
+        </div>
+      )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Select Users"
+      >
+        <div className="space-y-4 h-[60vh] overflow-y-auto">
+          {allUsers.map((user) => (
+            <div
+              className="flex items-center gap-4 p-3 border-b border-gray-200"
+              key={user._id}
+            >
+              <img
+                src={user.profileImageUrl}
+                alt={user.name}
+                className="w-10 h-10 rounded-full"
+              />
+              <div className="flex-1">
+                <p className="font-medium text-gray-800 dark:text-white">
+                  {user.name}
+                </p>
+                <p className="text-[13px] text-gray-600">{user.email}</p>
+              </div>
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                checked={tempSelectedUsers.includes(user._id)}
+                onChange={() => toggleUserSelection(user._id)}
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded-sm outline-none"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-end gap-4 pt-4">
+          <button className="card-btn" onClick={() => setIsModalOpen(false)}>
+            CANCEL
+          </button>
+          <button className="card-btn-fill" onClick={handleAssign}>
+            DONE
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
