@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import TaskStatusTabs from "../../components/TaskStatusTabs";
 import { API_PATHS } from "../../utils/apiPaths";
 import { LuFileSpreadsheet } from "react-icons/lu";
-import TaskStatusTabs from "../../components/TaskStatusTabs";
 import TaskCard from "../../components/Cards/TaskCard";
 
 const ManageTasks = () => {
@@ -12,6 +12,8 @@ const ManageTasks = () => {
   const [tabs, setTabs] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
   const navigate = useNavigate();
+
+  // console.log("allTasks", allTasks);
 
   const getAllTasks = async () => {
     try {
@@ -21,16 +23,32 @@ const ManageTasks = () => {
         },
       });
 
+      console.log("response", response.data);
+
       setAllTasks(response.data?.tasks?.length > 0 ? response.data.tasks : []);
 
       // Map status summary data with fixed labels and order
       const statusSummary = response.data?.statusSummary || {};
 
       const statusArray = [
-        { label: "All", count: statusSummary.all || 0 },
-        { label: "Pending", count: statusSummary.pendingTasks || 0 },
-        { label: "In Progress", count: statusSummary.inProgressTasks || 0 },
-        { label: "Completed", count: statusSummary.completedTasks || 0 },
+        {
+          label: "All",
+          count: Array.isArray(statusSummary.all)
+            ? statusSummary.all.length
+            : statusSummary.all || 0,
+        },
+        {
+          label: "Pending",
+          count: statusSummary.pendingTasks || 0,
+        },
+        {
+          label: "In Progress",
+          count: statusSummary.inProgressTasks || 0,
+        },
+        {
+          label: "Completed",
+          count: statusSummary.completedTasks || 0,
+        },
       ];
 
       setTabs(statusArray);
@@ -46,7 +64,7 @@ const ManageTasks = () => {
   // Download Task report
   const handleDownloadReport = async () => {};
 
-  console.log("tabs?.[0]?.count", tabs?.[0]?.count);
+  // console.log("tabs?.[0]?.count", tabs?.[0]?.count);
 
   useEffect(() => {
     getAllTasks(filterStatus);

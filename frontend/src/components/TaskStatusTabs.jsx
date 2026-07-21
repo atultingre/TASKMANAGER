@@ -1,6 +1,7 @@
 import React from "react";
 
-const TaskStatusTabs = ({ tabs, activeTab, setActiveTab }) => {
+const TaskStatusTabs = ({ tabs = [], activeTab, setActiveTab }) => {
+  // console.log("tabs", tabs);
   return (
     <div className="my-2">
       <div className="flex">
