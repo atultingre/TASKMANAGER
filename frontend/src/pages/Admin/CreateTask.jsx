@@ -11,6 +11,8 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
+import Modal from "../../components/Modal";
+import DeleteAlert from "../../components/DeleteAlert";
 
 const CreateTask = () => {
   const location = useLocation();
@@ -99,7 +101,13 @@ const CreateTask = () => {
           todoChecklist: todolist,
         },
       );
+      // console.log("response.status", response.status);
       toast.success("Task Updated Successfully");
+      setTimeout(() => {
+        if (response.status == 200) {
+          navigate("/admin/tasks");
+        }
+      }, 1500);
     } catch (error) {
       console.error("Error creating task:", error);
       setLoading(false);
@@ -169,7 +177,20 @@ const CreateTask = () => {
   };
 
   // Delete Task
-  const deleteTask = async () => {};
+  const deleteTask = async () => {
+    try {
+      await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      setOpenDeleteAlert(false);
+
+      toast.success("Expense details deleted successfully");
+      navigate("/admin/tasks");
+    } catch (error) {
+      console.error(
+        "Error deleting expense:",
+        error.response?.data?.message || error.message,
+      );
+    }
+  };
 
   useEffect(() => {
     if (taskId) {
@@ -314,6 +335,17 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={openDeleteAlert}
+        onClose={() => setOpenDeleteAlert(false)}
+        title="Delete Task"
+      >
+        <DeleteAlert
+          content="Are you sure you want to delete this task?"
+          onDelete={() => deleteTask()}
+        />
+      </Modal>
+      {openDeleteAlert}
       <ToastContainer />
     </DashboardLayout>
   );
