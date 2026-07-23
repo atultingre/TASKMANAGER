@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import DashboardLayout from "../../components/layouts/DashboardLayout";
-import axiosInstance from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPaths";
+import { useEffect, useState } from "react";
 import { LuFileSpreadsheet } from "react-icons/lu";
+import { toast } from "react-toastify";
 import UserCard from "../../components/Cards/UserCard";
+import DashboardLayout from "../../components/layouts/DashboardLayout";
+import { API_PATHS } from "../../utils/apiPaths";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ManageUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -20,8 +21,47 @@ const ManageUsers = () => {
   };
 
   // download task report
-  const handleDownloadReport = async () => {};
+  const handleDownloadReport = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.REPORTS.EXPORT_USERS, {
+        responseType: "blob",
+      });
 
+      // Create Excel blob
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      // Create temporary URL
+      const url = window.URL.createObjectURL(blob);
+
+      // Create temporary download link
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.setAttribute("download", "Users_Report.xlsx");
+
+      // Add link to DOM
+      document.body.appendChild(link);
+
+      // Trigger download
+      link.click();
+
+      // Remove temporary link
+      link.remove();
+
+      // Release temporary URL
+      window.URL.revokeObjectURL(url);
+
+      toast.success("User report downloaded successfully.");
+    } catch (error) {
+      console.error("Error downloading user report:", error);
+
+      toast.error("Failed to download user report. Please try again.");
+    }
+  };
+
+  
   useEffect(() => {
     getAllUsers();
 
